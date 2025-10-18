@@ -1,0 +1,426 @@
+import React, { useState } from "react";
+
+function App() {
+  const [userRole, setUserRole] = useState("patient"); // patient / clinician / admin
+  const [currentPage, setCurrentPage] = useState("landing"); // track current screen
+
+  const doctors = [
+    {
+      id: 1,
+      name: "Dr. Aisha Khan",
+      specialty: "Cardiologist",
+      rating: 4.8,
+      nextSlot: "10:00 AM",
+      distance: "2 km",
+    },
+    {
+      id: 2,
+      name: "Dr. Rohan Patel",
+      specialty: "Dermatologist",
+      rating: 4.5,
+      nextSlot: "11:30 AM",
+      distance: "3 km",
+    },
+    {
+      id: 3,
+      name: "Dr. Neha Sharma",
+      specialty: "Pediatrician",
+      rating: 4.7,
+      nextSlot: "9:00 AM",
+      distance: "1.5 km",
+    },
+  ];
+
+  const appointments = [
+    {
+      id: 1,
+      doctor: "Dr. Aisha Khan",
+      date: "2025-10-20",
+      time: "10:00 AM",
+      status: "upcoming",
+    },
+    {
+      id: 2,
+      doctor: "Dr. Rohan Patel",
+      date: "2025-09-28",
+      time: "11:30 AM",
+      status: "completed",
+    },
+  ];
+
+  const handleNavigation = (page) => setCurrentPage(page);
+
+  /* ---------------- Patient Screens ---------------- */
+  const renderPatientScreens = () => {
+    switch (currentPage) {
+      case "landing":
+        return (
+          <div style={styles.landingPage}>
+            {/* Hero Section */}
+            <section style={styles.heroSection}>
+              <h1 style={styles.heroTitle}>
+                Welcome to <span style={{ color: "#7b1fa2" }}>MedCare 🌿</span>
+              </h1>
+              <p style={styles.heroText}>
+                Experience world-class healthcare at your fingertips. Find
+                specialists, book appointments, and manage your health
+                effortlessly.
+              </p>
+              <div style={styles.heroButtons}>
+                <button
+                  style={styles.heroButton}
+                  onClick={() => handleNavigation("doctorList")}
+                >
+                  🩺 Book Appointment
+                </button>
+                <button
+                  style={{
+                    ...styles.heroButton,
+                    backgroundColor: "#fff",
+                    color: "#7b1fa2",
+                  }}
+                  onClick={() => handleNavigation("contact")}
+                >
+                  📞 Contact Us
+                </button>
+              </div>
+            </section>
+
+            {/* Features Section */}
+            <section style={styles.featureSection}>
+              <h2 style={{ color: "#7b1fa2" }}>Our Services</h2>
+              <div style={styles.featureCards}>
+                <div style={styles.featureCard}>
+                  <h3>Expert Doctors</h3>
+                  <p>
+                    Connect with highly qualified specialists in various fields.
+                  </p>
+                </div>
+                <div style={styles.featureCard}>
+                  <h3>Easy Booking</h3>
+                  <p>
+                    Book appointments in just a few clicks, anytime, anywhere.
+                  </p>
+                </div>
+                <div style={styles.featureCard}>
+                  <h3>24/7 Support</h3>
+                  <p>Our team is available round the clock for emergencies.</p>
+                </div>
+              </div>
+            </section>
+
+            {/* Featured Doctors */}
+            <section style={styles.featureSection}>
+              <h2 style={{ color: "#7b1fa2" }}>Featured Doctors</h2>
+              <div style={styles.doctorCards}>
+                {doctors.map((d) => (
+                  <div key={d.id} style={styles.doctorCard}>
+                    <h3>{d.name}</h3>
+                    <p>{d.specialty}</p>
+                    <p>Rating: {d.rating} ⭐</p>
+                    <p>Next Slot: {d.nextSlot}</p>
+                    <button
+                      style={styles.smallButton}
+                      onClick={() => handleNavigation("doctorDetail")}
+                    >
+                      View Profile
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </div>
+        );
+      case "doctorList":
+        return (
+          <div style={styles.page}>
+            <h1>Doctor List</h1>
+            <div style={styles.doctorCards}>
+              {doctors.map((d) => (
+                <div key={d.id} style={styles.doctorCard}>
+                  <h3>{d.name}</h3>
+                  <p>{d.specialty}</p>
+                  <p>Rating: {d.rating} ⭐</p>
+                  <p>Next Slot: {d.nextSlot}</p>
+                  <button
+                    style={styles.smallButton}
+                    onClick={() => handleNavigation("doctorDetail")}
+                  >
+                    View Details
+                  </button>
+                </div>
+              ))}
+            </div>
+            <button
+              style={styles.backButton}
+              onClick={() => handleNavigation("landing")}
+            >
+              ← Back
+            </button>
+          </div>
+        );
+      case "doctorDetail":
+        return (
+          <div style={styles.page}>
+            <h1>Doctor Profile</h1>
+            <p>
+              <strong>Name:</strong> Dr. Aisha Khan
+            </p>
+            <p>
+              <strong>Specialty:</strong> Cardiologist
+            </p>
+            <p>
+              <strong>Clinic:</strong> LinaCare Clinic, Chennai
+            </p>
+            <p>
+              <strong>Bio:</strong> Experienced cardiologist with 10+ years of
+              practice.
+            </p>
+            <p>
+              <strong>Languages:</strong> English, Hindi
+            </p>
+            <h3>Availability Calendar</h3>
+            <p>[Calendar Placeholder]</p>
+            <button
+              style={styles.smallButton}
+              onClick={() => handleNavigation("bookingFlow")}
+            >
+              Book Appointment
+            </button>
+            <button
+              style={styles.backButton}
+              onClick={() => handleNavigation("doctorList")}
+            >
+              ← Back
+            </button>
+          </div>
+        );
+      case "bookingFlow":
+        return (
+          <div style={styles.page}>
+            <h1>Book Appointment</h1>
+            <p> Patient Name</p>
+            <textarea style={styles.input} placeholder="Enter Patient Name" />
+            <p> Patient ID </p>
+            <textarea style={styles.input} placeholder="Enter Patient ID" />
+            <p>Date of Birth</p>
+            <input type="date" style={styles.input} />
+            <p>Appointment Date</p>
+            <input type="date" style={styles.input} />
+            <p>Choose Timeslot</p>
+            <select style={styles.input}>
+              <option>9:00 AM - 10:00 AM</option>
+              <option>10:00 AM - 11:00 AM</option>
+            </select>
+            <p>Reason/Notes</p>
+            <textarea style={styles.input} placeholder="Describe your reason" />
+            <button style={styles.smallButton}>Confirm</button>
+            <button
+              style={styles.backButton}
+              onClick={() => handleNavigation("doctorDetail")}
+            >
+              ← Back
+            </button>
+          </div>
+        );
+      case "appointments":
+        return (
+          <div style={styles.page}>
+            <h1>My Appointments</h1>
+            <h3>Upcoming</h3>
+            {appointments
+              .filter((a) => a.status === "upcoming")
+              .map((a) => (
+                <div key={a.id} style={styles.card}>
+                  <p>
+                    {a.doctor} - {a.date} {a.time}
+                  </p>
+                  <button>Reschedule</button>
+                  <button>Cancel</button>
+                </div>
+              ))}
+            <h3>Past</h3>
+            {appointments
+              .filter((a) => a.status === "completed")
+              .map((a) => (
+                <div key={a.id} style={styles.card}>
+                  <p>
+                    {a.doctor} - {a.date} {a.time}
+                  </p>
+                </div>
+              ))}
+          </div>
+        );
+      case "profile":
+        return (
+          <div style={styles.page}>
+            <h1>Profile</h1>
+            <p>Name: John Doe</p>
+            <p>Email: john@example.com</p>
+            <p>Notifications: Enabled</p>
+            <p>Password: ********</p>
+            <p>Prescription History: [Link]</p>
+          </div>
+        );
+      case "contact":
+        return (
+          <div style={styles.page}>
+            <h1>Contact Us</h1>
+            <p>
+              <strong>Phone:</strong> +91 98765 43210
+            </p>
+            <p>
+              <strong>Email:</strong> contact@medcare.com
+            </p>
+            <p>
+              <strong>Emergency:</strong> 108 (24x7 Helpline)
+            </p>
+            <p>
+              <strong>Location:</strong> 120 Anna Salai, Nungambakkam, Chennai,
+              TN, India
+            </p>
+          </div>
+        );
+      default:
+        return <div>Page not found</div>;
+    }
+  };
+
+  return (
+    <div style={styles.container}>
+      {/* Role Switch */}
+      <div style={styles.roleSwitch}>
+        <button
+          onClick={() => {
+            setUserRole("patient");
+            setCurrentPage("landing");
+          }}
+        >
+          Patient
+        </button>
+        <button
+          onClick={() => {
+            setUserRole("clinician");
+            setCurrentPage("dashboard");
+          }}
+        >
+          Clinician
+        </button>
+        <button
+          onClick={() => {
+            setUserRole("admin");
+            setCurrentPage("adminDashboard");
+          }}
+        >
+          Admin
+        </button>
+      </div>
+
+      {/* Render Pages */}
+      {userRole === "patient" && renderPatientScreens()}
+    </div>
+  );
+}
+
+/* ---------------- Styles ---------------- */
+const styles = {
+  container: {
+    fontFamily: "Poppins, sans-serif",
+    padding: 0,
+    margin: 0,
+    backgroundColor: "#fdfcff",
+  },
+  roleSwitch: {
+    display: "flex",
+    gap: 10,
+    padding: 20,
+    justifyContent: "center",
+  },
+  landingPage: { display: "flex", flexDirection: "column", gap: 30 },
+  heroSection: {
+    background: "linear-gradient(135deg,#e1bee7,#9575cd)",
+    color: "#fff",
+    padding: 40,
+    textAlign: "center",
+  },
+  heroTitle: { fontSize: 36, margin: 0 },
+  heroText: { fontSize: 18, margin: "20px 0" },
+  heroButtons: { display: "flex", justifyContent: "center", gap: 20 },
+  heroButton: {
+    padding: "12px 30px",
+    borderRadius: 8,
+    border: "none",
+    fontWeight: 600,
+    cursor: "pointer",
+    background: "#7b1fa2",
+    color: "#fff",
+  },
+  featureSection: { padding: "30px 20px", textAlign: "center" },
+  featureCards: {
+    display: "flex",
+    justifyContent: "center",
+    gap: 20,
+    flexWrap: "wrap",
+  },
+  featureCard: {
+    background: "#fff",
+    padding: 20,
+    borderRadius: 12,
+    width: 250,
+    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+  },
+  doctorCards: {
+    display: "flex",
+    gap: 20,
+    flexWrap: "wrap",
+    justifyContent: "center",
+  },
+  doctorCard: {
+    background: "#fff",
+    padding: 20,
+    borderRadius: 12,
+    width: 220,
+    textAlign: "center",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+  },
+  smallButton: {
+    marginTop: 10,
+    padding: "8px 15px",
+    borderRadius: 6,
+    border: "none",
+    cursor: "pointer",
+    background: "#7b1fa2",
+    color: "#fff",
+  },
+  backButton: {
+    marginTop: 20,
+    padding: "8px 15px",
+    borderRadius: 6,
+    border: "none",
+    cursor: "pointer",
+    background: "#ccc",
+  },
+  page: {
+    padding: 30,
+    maxWidth: 900,
+    margin: "20px auto",
+    background: "#fff",
+    borderRadius: 12,
+    boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+  },
+  input: {
+    width: "100%",
+    padding: 8,
+    marginBottom: 10,
+    borderRadius: 6,
+    border: "1px solid #ccc",
+  },
+  card: {
+    background: "#f3e5f5",
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+};
+
+export default App;
